@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "esnext",
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "jsx": "preserve",
+    "paths": {
+      "@lib/*": ["lib/*"],
+      "@lib": ["lib"],
+      "@components/*": ["components/*"],
+      "@components": ["components"],
+      "@helper/*": ["helper/*"],
+      "@helper": ["helper"],
+      "@context/*": ["context/*"],
+      "@context": ["context"]
+    }
+  },
+  "include": ["**/*.js", "**/*.jsx"],
+  "exclude": ["node_modules"]
+}
