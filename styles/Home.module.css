@@ -1,0 +1,63 @@
+.pokeTooltip {
+  position: relative;
+}
+
+.abilityDetails {
+  visibility: hidden;
+  position: absolute;
+  top: -50px;
+  left: -65px;
+  right: 0;
+  margin: auto;
+  background-color: black;
+  width: 200px;
+  color: white;
+  z-index: 100;
+}
+
+.pokeTooltip:hover .abilityDetails {
+  visibility: visible;
+}
+
+
+.moveDetails {
+  visibility: hidden;
+  position: absolute;
+  top: -50px;
+  left: -40px;
+  right: 0;
+  margin: auto;
+  background-color: black;
+  width: 200px;
+  color: white;
+  z-index: 100;
+}
+
+.pokeTooltip:hover .moveDetails {
+  visibility: visible;
+}
+
+  .textshadow {
+    color: #FFFFFF;
+    text-shadow:
+    0 0 10px #FFFFFF,
+    0 0 20px #FFFFFF,
+    0 0 30px #FFFFFF,
+    0 0 40px #FFFFFF,
+    0 0 70px #FFFFFF,
+    0 0 80px #FFFFFF,
+    0 0 100px #FFFFFF,
+    0 0 150px #FFFFFF;
+  }
+  
+  .namejapan {
+    text-shadow: 0 0 0.2em #FFFFFF, 0 0 0.2em #ffffff, 0 0 0.2em #FFFFFF;
+  }
+
+
+
+
+
+
+
+

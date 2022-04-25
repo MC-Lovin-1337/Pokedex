@@ -1,19 +1,19 @@
 import hexToRgba from "hex-to-rgba";
 import Image from "next/image";
 import pokeColors from "@lib/pokeColors";
-import Home from "pages";
-import styles from "../styles/Home.module.css";
-import { useRouter } from "next/router";
+import styles from "../../styles/Home.module.css";
+
+/* const Pokemon = ({ pokemon }) => {
+  return ( <div style={{
+    background: hexToRgba(
+    pokeColors[pokemon.types[0].type.name || "normal"], 
+    0.28
+    ),
+  }}> */
 
 const Pokemon = ({ pokemon }) => {
-  const router = useRouter();
-
-  if (router.isFallback) {
-    return <p>Loading ...</p>;
-  }
   return (
     <div
-      className="p-6 min-h-screen"
       style={{
         background: `linear-gradient(45deg,
         ${hexToRgba(
@@ -27,62 +27,21 @@ const Pokemon = ({ pokemon }) => {
       )`,
       }}
     >
-      <div className="flex text-center flex-row flex-wrap">
-        <header>
-          <button onClick={() => router.back()}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M7 16l-4-4m0 0l4-4m-4 4h18"
-              />
-            </svg>
-          </button>
+      <div className={styles.wrapper}>
+        <header className={styles.header}>
+          <h1 className={styles.header}></h1>
         </header>
 
-        <aside className="flex flex-col justify-center items-center md:grow md:shrink md:basis-0">
-          <div
-            className="flex absolute inset-0 ml-[100px] w-fit h-fit font-bold text-[100px] sm:hidden"
-            style={{
-              color: hexToRgba(
-                pokeColors[pokemon.types[0].type.name || "normal"],
-                0.3
-              ),
-            }}
-          >
-            #{pokemon.order.toString().padStart(3, 0)}{" "}
+        <aside className={`${styles.aside} ${styles.links}`}>
+          <div className={styles.hidden}>
+            #{pokemon.order.toString().padStart(3, 0)}
           </div>
-          <div
-            className="flex text-left text-xs sm:hidden"
-            style={{
-              color: hexToRgba(
-                pokeColors[pokemon.types[0].type.name || "normal"],
-                1.0
-              ),
-            }}
-          >
-            {pokemon.species.genera[7].genus}
-          </div>
+          {/* <div className={styles.pokeTooltip}>#{pokemon.order.toString().padStart(3,0)}
+  <div className={styles.tooltipText}>Das hier ist ein Beispieltext der nur angezeigt wird, wenn man über die id hovered.</div> 
+</div>*/}
 
-          <div
-            className="flex text-left relative ml-5 text-[50px] bottom-5 sm:hidden"
-            style={{
-              color: hexToRgba(
-                pokeColors[pokemon.types[0].type.name || "normal"],
-                1.0
-              ),
-            }}
-          >
-            {pokemon.name}
-          </div>
-          <div className="flex relative">
+          {/* <div className={styles.bild}> */}
+          <div className={styles.bild}>
             <div id="poke">
               <Image
                 src={pokemon.image1}
@@ -94,11 +53,11 @@ const Pokemon = ({ pokemon }) => {
           </div>
         </aside>
 
-        <aside className="flex flex-col md:grow md:shrink md:basis-0 w-full">
-          <div className="flex ">
-            <div className="relative">
+        <aside className={`${styles.aside} ${styles.rechts}`}>
+          <div className={`${styles.aside} ${styles.rechtsoben}`}>
+            <div className={styles.pokenamecontainer}>
               <div
-                className="hidden sm:flex absolute inset-0 ml-[100px] w-fit h-fit font-bold text-[100px]"
+                className={styles.pokenummer}
                 style={{
                   color: hexToRgba(
                     pokeColors[pokemon.types[0].type.name || "normal"],
@@ -110,45 +69,44 @@ const Pokemon = ({ pokemon }) => {
               </div>
 
               <div
-                className="hidden sm:flex text-left text-xs"
                 style={{
                   color: hexToRgba(
                     pokeColors[pokemon.types[0].type.name || "normal"],
                     1.0
                   ),
                 }}
+                className={`${styles.pokemonart}`}
               >
                 {pokemon.species.genera[7].genus}
               </div>
-              <div className={`${styles.textshadow}`}>
-                <div
-                  className="hidden sm:flex text-left relative ml-5 text-[50px] bottom-5"
-                  style={{
-                    color: hexToRgba(
-                      pokeColors[pokemon.types[0].type.name || "normal"],
-                      1.0
-                    ),
-                  }}
-                >
-                  {pokemon.name}
-                </div>
+
+              <div
+                style={{
+                  color: hexToRgba(
+                    pokeColors[pokemon.types[0].type.name || "normal"],
+                    1.0
+                  ),
+                }}
+                className={`${styles.pokename} ${styles.textshadow}`}
+              >
+                {pokemon.name}
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col">
-            <div className="flex relative">
-              <div className="flex relative text-center ml-5">
-                <div className="flex mb-4 mt-5">
+          <div className={`${styles.aside} ${styles.rechtsmitte}`}>
+            <div typcontainer>
+              <div className={styles.poketyp}>
+                <div className={styles.typeContainer}>
                   {pokemon.types.map(({ type }) => (
                     <span
-                      className="font-normal p-0.5 h-[30px] w-[70px] rounded-[5px] text-white"
                       style={{
                         backgroundColor: hexToRgba(
                           pokeColors[type.name || "normal"],
                           1.0
                         ),
                       }}
+                      className={styles.button}
                       key={type.name}
                     >
                       {type.name}
@@ -159,32 +117,31 @@ const Pokemon = ({ pokemon }) => {
             </div>
 
             <div
-              className="flex text-left text-xs ml-5"
               style={{
                 color: hexToRgba(
                   pokeColors[pokemon.types[0].type.name || "normal"],
                   1.0
                 ),
               }}
+              className={styles.flavortext}
             >
               height {pokemon.height / 10} meter
             </div>
-
             <div
-              className="flex text-left text-xs ml-5"
               style={{
                 color: hexToRgba(
                   pokeColors[pokemon.types[0].type.name || "normal"],
                   1.0
                 ),
               }}
+              className={styles.flavortext}
             >
               Weight {pokemon.weight / 10} kilograms
             </div>
           </div>
 
-          <div className="flex flex-col">
-            <div className="flex text-left relative ml-5 pt-[1em] bottom-2.5">
+          <div className={`${styles.aside} ${styles.rechtsunten}`}>
+            <div className={styles.stats}>
               <ol>
                 {pokemon.stats.map(({ stat, base_stat }) => (
                   <li key={stat.name}>
@@ -195,13 +152,13 @@ const Pokemon = ({ pokemon }) => {
             </div>
           </div>
           <div
-            className="flex text-left text-xs ml-5"
             style={{
               color: hexToRgba(
                 pokeColors[pokemon.types[0].type.name || "normal"],
                 1.0
               ),
             }}
+            className={styles.flavortext}
           >
             {pokemon.species.flavor_text_entries[0].flavor_text.replace(
               "",
@@ -210,9 +167,8 @@ const Pokemon = ({ pokemon }) => {
           </div>
         </aside>
 
-        <div className="w-full text-center relative mt-4 text-6xl md:text-[100px] lg:text-[150px]">
+        <div className={styles.namejapan}>
           <h1
-            className={styles.namejapan}
             style={{
               color: hexToRgba(
                 pokeColors[pokemon.types[0].type.name || "normal"],
@@ -224,9 +180,9 @@ const Pokemon = ({ pokemon }) => {
           </h1>
         </div>
 
-        <footer className="flex md:grow md:shrink md:basis-full flex-col justify-around md:flex-col lg:flex-row w-full">
-          <aside className="flex flex-col items-center">
-            <div className="flex relative text-2xl mt-10 mb-5">abilities</div>
+        <footer className={styles.footer}>
+          <aside className={`${styles.aside} ${styles.footerlinks}`}>
+            <div className={styles.footerueber}>abilities</div>
 
             {pokemon.abilities.map((ability) => (
               <div key={ability.name} className={styles.pokeTooltip}>
@@ -239,8 +195,8 @@ const Pokemon = ({ pokemon }) => {
             ))}
           </aside>
 
-          <aside className="flex flex-col items-center">
-            <div className="flex relative text-2xl mt-10 mb-5">moves</div>
+          <aside className={`${styles.aside} ${styles.footermitte}`}>
+            <div className={styles.footerueber}>moves</div>
             {pokemon.moves.map((move) => (
               <div key={move.name} className={styles.pokeTooltip}>
                 <ol>{move.name.replace("-", " ")} </ol>
@@ -252,10 +208,10 @@ const Pokemon = ({ pokemon }) => {
             ))}
           </aside>
 
-          <aside className="flex flex-col items-center">
-            <div className="relative text-2xl mt-10 mb-5">Family</div>
-            <div className="flex flex-row w-screen lg:w-auto justify-around">
-              <a href={`/${pokemon.evolution.chain.species.name}`}>
+          <aside className={`${styles.aside} ${styles.footerrechts}`}>
+            <div className={styles.footerueber}>Family</div>
+            <div className={styles.footertext}>
+              <div>
                 {pokemon.evolutionImages[0] && (
                   <Image
                     src={pokemon.evolutionImages[0]}
@@ -264,37 +220,27 @@ const Pokemon = ({ pokemon }) => {
                     width={125}
                   ></Image>
                 )}
-              </a>
+                {pokemon.evolutionImages[1] && (
+                  <Image
+                    src={pokemon.evolutionImages[1]}
+                    alt={pokemon.name}
+                    height={125}
+                    width={125}
+                  ></Image>
+                )}
+                {pokemon.evolutionImages[2] && (
+                  <Image
+                    src={pokemon.evolutionImages[2]}
+                    alt={pokemon.name}
+                    height={125}
+                    width={125}
+                  ></Image>
+                )}
+              </div>
 
-              {pokemon.evolution.chain.evolves_to[0] && (
-                <a
-                  href={`/${pokemon.evolution.chain.evolves_to[0].species.name}`}
-                >
-                  {pokemon.evolutionImages[1] && (
-                    <Image
-                      src={pokemon.evolutionImages[1]}
-                      alt={pokemon.name}
-                      height={125}
-                      width={125}
-                    ></Image>
-                  )}
-                </a>
-              )}
-
-              {pokemon.evolution.chain.evolves_to[0]?.evolves_to[0] && (
-                <a
-                  href={`/${pokemon.evolution.chain.evolves_to[0].evolves_to[0].species.name}`}
-                >
-                  {pokemon.evolutionImages[2] && (
-                    <Image
-                      src={pokemon.evolutionImages[2]}
-                      alt={pokemon.name}
-                      height={125}
-                      width={125}
-                    ></Image>
-                  )}
-                </a>
-              )}
+              {pokemon.evolution.chain.species.name}
+              {pokemon.evolution.chain.evolves_to[0].species.name}
+              {pokemon.evolution.chain.evolves_to[0].evolves_to[0].species.name}
             </div>
           </aside>
         </footer>

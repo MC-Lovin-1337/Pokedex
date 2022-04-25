@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import PokeCard from "@components/PokeCard";
 import PokeFilter from "@components/PokeFilter";
 import pokeColors from "@lib/pokeColors";
+import { backgroundColor } from "tailwindcss/defaultTheme";
 
 export default function Home({ pokemon }) {
   const [search, setSearch] = useState("");
@@ -50,7 +51,7 @@ export default function Home({ pokemon }) {
 export async function getStaticProps() {
   try {
     const pokeRes = await fetch(
-      `${process.env.API_URL}/pokemon?offset=0&limit=150`
+      `${process.env.API_URL}/pokemon?offset=0&limit=151`
     );
     const pokemon = await pokeRes.json();
     const pokemonPromiseList = pokemon.results.map(async (p) => {
@@ -59,7 +60,7 @@ export async function getStaticProps() {
       return {
         ...p,
         details: {
-          image: pokeDetails.sprites.other["official-artwork"]["front_default"],
+          image: pokeDetails.sprites.other["dream_world"]["front_default"],
           types: pokeDetails.types,
         },
       };
