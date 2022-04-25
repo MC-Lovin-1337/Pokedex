@@ -57,7 +57,7 @@ const Pokemon = ({ pokemon }) => {
               ),
             }}
           >
-            #{pokemon.order.toString().padStart(3, 0)}{" "}
+            #{pokemon.id.toString().padStart(3, 0)}{" "}
           </div>
           <div
             className="flex text-left text-xs sm:hidden"
@@ -106,7 +106,7 @@ const Pokemon = ({ pokemon }) => {
                   ),
                 }}
               >
-                #{pokemon.order.toString().padStart(3, 0)}{" "}
+                #{pokemon.id.toString().padStart(3, 0)}{" "}
               </div>
 
               <div
@@ -203,10 +203,9 @@ const Pokemon = ({ pokemon }) => {
               ),
             }}
           >
-            {pokemon.species.flavor_text_entries[0].flavor_text.replace(
-              "",
-              " "
-            )}
+            {pokemon.species.flavor_text_entries
+              .find((e) => e.language.name === "en")
+              ?.flavor_text.replace("", " ")}
           </div>
         </aside>
 
@@ -220,7 +219,7 @@ const Pokemon = ({ pokemon }) => {
               ),
             }}
           >
-            {pokemon.species.names[0].name}
+            {pokemon.species.names.find((e) => e.language.name === "ja")?.name}
           </h1>
         </div>
 
@@ -232,7 +231,11 @@ const Pokemon = ({ pokemon }) => {
               <div key={ability.name} className={styles.pokeTooltip}>
                 <ol>{ability.name.replace("-", " ")} </ol>
 
-                <div className={styles.abilityDetails}>
+                <div
+                  className={`bg-${pokemon.types[0].type.name || "normal"} ${
+                    styles.pokeTooltipDetails
+                  }`}
+                >
                   <ol>{ability.flavorText} </ol>
                 </div>
               </div>
@@ -245,7 +248,11 @@ const Pokemon = ({ pokemon }) => {
               <div key={move.name} className={styles.pokeTooltip}>
                 <ol>{move.name.replace("-", " ")} </ol>
 
-                <div className={styles.moveDetails}>
+                <div
+                  className={`bg-${pokemon.types[0].type.name || "normal"} ${
+                    styles.pokeTooltipDetails
+                  }`}
+                >
                   <ol>{move.flavorText} </ol>
                 </div>
               </div>
@@ -253,48 +260,82 @@ const Pokemon = ({ pokemon }) => {
           </aside>
 
           <aside className="flex flex-col items-center">
-            <div className="relative text-2xl mt-10 mb-5">Family</div>
+            <div className="relative text-2xl mt-10 mb-5">evolutions</div>
             <div className="flex flex-row w-screen lg:w-auto justify-around">
-              <a href={`/${pokemon.evolution.chain.species.name}`}>
-                {pokemon.evolutionImages[0] && (
-                  <Image
-                    src={pokemon.evolutionImages[0]}
-                    alt={pokemon.name}
-                    height={125}
-                    width={125}
-                  ></Image>
+              <div className={styles.pokeTooltip}>
+                {pokemon.evolution.chain.species.name && (
+                  <a href={`/${pokemon.evolution.chain.species.name}`}>
+                    {pokemon.evolutionImages[0] && (
+                      <Image
+                        src={pokemon.evolutionImages[0]}
+                        alt={pokemon.name}
+                        height={125}
+                        width={125}
+                      ></Image>
+                    )}
+                  </a>
                 )}
-              </a>
-
-              {pokemon.evolution.chain.evolves_to[0] && (
-                <a
-                  href={`/${pokemon.evolution.chain.evolves_to[0].species.name}`}
+                <div
+                  className={`bg-${pokemon.types[0].type.name || "normal"} ${
+                    styles.pokeTooltipDetails
+                  }`}
                 >
-                  {pokemon.evolutionImages[1] && (
-                    <Image
-                      src={pokemon.evolutionImages[1]}
-                      alt={pokemon.name}
-                      height={125}
-                      width={125}
-                    ></Image>
-                  )}
-                </a>
-              )}
+                  <p>{pokemon.evolution.chain.species.name} </p>
+                </div>
+              </div>
 
-              {pokemon.evolution.chain.evolves_to[0]?.evolves_to[0] && (
-                <a
-                  href={`/${pokemon.evolution.chain.evolves_to[0].evolves_to[0].species.name}`}
+              <div className={styles.pokeTooltip}>
+                {pokemon.evolution.chain.evolves_to[0].species.name && (
+                  <a
+                    href={`/${pokemon.evolution.chain.evolves_to[0].species.name}`}
+                  >
+                    {pokemon.evolutionImages[0] && (
+                      <Image
+                        src={pokemon.evolutionImages[1]}
+                        alt={pokemon.name}
+                        height={125}
+                        width={125}
+                      ></Image>
+                    )}
+                  </a>
+                )}
+                <div
+                  className={`bg-${pokemon.types[0].type.name || "normal"} ${
+                    styles.pokeTooltipDetails
+                  }`}
                 >
-                  {pokemon.evolutionImages[2] && (
-                    <Image
-                      src={pokemon.evolutionImages[2]}
-                      alt={pokemon.name}
-                      height={125}
-                      width={125}
-                    ></Image>
-                  )}
-                </a>
-              )}
+                  <p>{pokemon.evolution.chain.evolves_to[0].species.name} </p>
+                </div>
+              </div>
+
+              <div className={styles.pokeTooltip}>
+                {pokemon.evolution.chain.evolves_to[0]?.evolves_to[0] && (
+                  <a
+                    href={`/${pokemon.evolution.chain.evolves_to[0].evolves_to[0].species.name}`}
+                  >
+                    {pokemon.evolutionImages[0] && (
+                      <Image
+                        src={pokemon.evolutionImages[2]}
+                        alt={pokemon.name}
+                        height={125}
+                        width={125}
+                      ></Image>
+                    )}
+                  </a>
+                )}
+                <div
+                  className={`bg-${pokemon.types[0].type.name || "normal"} ${
+                    styles.pokeTooltipDetails
+                  }`}
+                >
+                  <p>
+                    {
+                      pokemon.evolution.chain.evolves_to[0].evolves_to[0]
+                        .species.name
+                    }{" "}
+                  </p>
+                </div>
+              </div>
             </div>
           </aside>
         </footer>
@@ -346,7 +387,9 @@ export async function getStaticProps({ params }) {
       const abilityDetails = await abilityRes.json();
       return {
         ...abilityDetails,
-        flavorText: abilityDetails.flavor_text_entries[0].flavor_text,
+        flavorText: abilityDetails.flavor_text_entries.find(
+          (e) => e.language.name === "en"
+        )?.flavor_text,
       };
     });
     const abilities = await Promise.all(abilitiesPromises);
@@ -360,7 +403,9 @@ export async function getStaticProps({ params }) {
         const moveDetails = await moveRes.json();
         return {
           ...moveDetails,
-          flavorText: moveDetails.flavor_text_entries[0].flavor_text,
+          flavorText: moveDetails.flavor_text_entries.find(
+            (e) => e.language.name === "en"
+          )?.flavor_text,
         };
       });
     const moves = await Promise.all(movesPromises);
@@ -377,6 +422,7 @@ export async function getStaticProps({ params }) {
       image1: pokeDetails.sprites.other["dream_world"]["front_default"],
       image: pokeDetails.sprites.other["official-artwork"]["front_default"],
       types: pokeDetails.types,
+      id: pokeDetails.id,
       order: pokeDetails.order,
       species: species,
       evolution: evolution,

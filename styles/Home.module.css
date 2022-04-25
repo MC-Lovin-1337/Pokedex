@@ -2,40 +2,22 @@
   position: relative;
 }
 
-.abilityDetails {
+.pokeTooltipDetails {
   visibility: hidden;
   position: absolute;
-  top: -50px;
-  left: -65px;
+  bottom: 100%;
+  left: 50%;
   right: 0;
-  margin: auto;
-  background-color: black;
+  margin-left: -100px;
   width: 200px;
-  color: white;
+  color: black;
   z-index: 100;
 }
 
-.pokeTooltip:hover .abilityDetails {
+.pokeTooltip:hover .pokeTooltipDetails {
   visibility: visible;
 }
 
-
-.moveDetails {
-  visibility: hidden;
-  position: absolute;
-  top: -50px;
-  left: -40px;
-  right: 0;
-  margin: auto;
-  background-color: black;
-  width: 200px;
-  color: white;
-  z-index: 100;
-}
-
-.pokeTooltip:hover .moveDetails {
-  visibility: visible;
-}
 
   .textshadow {
     color: #FFFFFF;

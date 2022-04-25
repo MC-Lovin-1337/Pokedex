@@ -105,7 +105,6 @@ export async function getStaticProps() {
       };
     });
     const pokemonList = await Promise.all(pokemonPromiseList);
-    console.log(JSON.stringify(pokemonList));
     return {
       props: {
         pokemon: pokemonList,
