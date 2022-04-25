@@ -45,7 +45,6 @@ const Pokemon = ({ pokemon }) => {
             </svg>
           </button>
         </header>
-
         <aside className="flex flex-col justify-center items-center md:grow md:shrink md:basis-0">
           <div
             className="flex absolute inset-0 ml-[100px] w-fit h-fit font-bold text-[100px] sm:hidden"
