@@ -6,23 +6,37 @@ import PokeCard from "@components/PokeCard";
 import PokeFilter from "@components/PokeFilter";
 import pokeColors from "@lib/pokeColors";
 import { backgroundColor } from "tailwindcss/defaultTheme";
+import hexToRgba from "hex-to-rgba";
 
 export default function Home({ pokemon }) {
   const [search, setSearch] = useState("");
   const [filteredPokemon, setFilteredPokemon] = useState(null);
   const [pokemonList, setPokemonList] = useState(pokemon);
-  // const [selectedType, setSelectedType] = useState("");
+
+  const [selectedType, setSelectedType] = useState("");
+
   useEffect(() => {
-    if (!search || !pokemonList) {
+    if ((!search && !selectedType) || !pokemonList) {
       setFilteredPokemon(null);
       return;
     }
 
-    const filteredPokemons = pokemonList.filter((p) =>
-      p.name.toLowerCase().includes(search)
-    );
+    const typeFilteredPokemons = pokemonList.filter((p) =>{
+      if (selectedType === "" || p.details.types.find((type) => type.type.name === selectedType)) {
+        return true 
+      }
+      return false
+  });
+
+    const filteredPokemons = typeFilteredPokemons.filter((p) =>{
+      if(p.name.toLowerCase().includes(search.toLowerCase())) {
+        return true
+      } 
+      return false
+  });
+
     setFilteredPokemon(filteredPokemons);
-  }, [search, pokemonList]);
+  }, [search, selectedType, pokemonList]);
 
   return (
     <div className="flex w-full flex-col items-center justify-center text-center overflow-x-hidden overflow-y-auto">
@@ -34,12 +48,37 @@ export default function Home({ pokemon }) {
         onChange={setSearch}
         value={search}
       />
-      {/* <PokeFilter
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <PokeFilter
         onChange={setSelectedType}
         options={Object.keys(pokeColors)}
         title="Type"
         defaultValue={""}
-      /> */}
+        value={selectedType}
+      />
       <div className="flex flex-row flex-wrap -mx-2 capitalize w-full">
         {(filteredPokemon || pokemonList).map((pokemon) => (
           <PokeCard key={pokemon.name} pokemon={pokemon} />
@@ -66,7 +105,7 @@ export async function getStaticProps() {
       };
     });
     const pokemonList = await Promise.all(pokemonPromiseList);
-    console.log(pokemonList);
+    console.log(JSON.stringify(pokemonList));
     return {
       props: {
         pokemon: pokemonList,
