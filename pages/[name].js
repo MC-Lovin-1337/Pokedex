@@ -22,8 +22,7 @@ const Pokemon = ({ pokemon }) => {
         )} , ${hexToRgba(
           pokeColors[pokemon.types[0].type.name || "normal"],
           0.1
-        )}
-      
+        )}      
       )`,
       }}
     >
