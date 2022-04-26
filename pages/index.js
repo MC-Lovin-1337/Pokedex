@@ -50,28 +50,6 @@ export default function Home({ pokemon }) {
       />
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <PokeFilter
         onChange={setSelectedType}
         options={Object.keys(pokeColors)}
@@ -79,7 +57,7 @@ export default function Home({ pokemon }) {
         defaultValue={""}
         value={selectedType}
       />
-      <div className="flex flex-row flex-wrap -mx-2 capitalize w-full">
+      <div className="flex flex-row flex-wrap -mx-2 capitalize w-full cursor-pointer">
         {(filteredPokemon || pokemonList).map((pokemon) => (
           <PokeCard key={pokemon.name} pokemon={pokemon} />
         ))}

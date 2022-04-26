@@ -227,7 +227,9 @@ const Pokemon = ({ pokemon }) => {
 
             {pokemon.abilities.map((ability) => (
               <div key={ability.name} className={styles.pokeTooltip}>
-                <ol>{ability.name.replace("-", " ")} </ol>
+                <ol className="cursor-pointer">
+                  {ability.name.replace("-", " ")}{" "}
+                </ol>
 
                 <div
                   className={`bg-${pokemon.types[0].type.name || "normal"} ${
@@ -244,7 +246,9 @@ const Pokemon = ({ pokemon }) => {
             <div className="flex relative text-2xl mt-10 mb-5">moves</div>
             {pokemon.moves.map((move) => (
               <div key={move.name} className={styles.pokeTooltip}>
-                <ol>{move.name.replace("-", " ")} </ol>
+                <ol className="cursor-pointer">
+                  {move.name.replace("-", " ")}{" "}
+                </ol>
 
                 <div
                   className={`bg-${pokemon.types[0].type.name || "normal"} ${
@@ -283,11 +287,11 @@ const Pokemon = ({ pokemon }) => {
               </div>
 
               <div className={styles.pokeTooltip}>
-                {pokemon.evolution.chain.evolves_to[0].species.name && (
+                {pokemon.evolution.chain.evolves_to[0] && (
                   <a
                     href={`/${pokemon.evolution.chain.evolves_to[0].species.name}`}
                   >
-                    {pokemon.evolutionImages[0] && (
+                    {pokemon.evolutionImages[1] && (
                       <Image
                         src={pokemon.evolutionImages[1]}
                         alt={pokemon.name}
@@ -302,7 +306,7 @@ const Pokemon = ({ pokemon }) => {
                     styles.pokeTooltipDetails
                   }`}
                 >
-                  <p>{pokemon.evolution.chain.evolves_to[0].species.name} </p>
+                  <p>{pokemon.evolution.chain.evolves_to[0]?.species.name} </p>
                 </div>
               </div>
 
@@ -311,7 +315,7 @@ const Pokemon = ({ pokemon }) => {
                   <a
                     href={`/${pokemon.evolution.chain.evolves_to[0].evolves_to[0].species.name}`}
                   >
-                    {pokemon.evolutionImages[0] && (
+                    {pokemon.evolutionImages[2] && (
                       <Image
                         src={pokemon.evolutionImages[2]}
                         alt={pokemon.name}
@@ -328,9 +332,9 @@ const Pokemon = ({ pokemon }) => {
                 >
                   <p>
                     {
-                      pokemon.evolution.chain.evolves_to[0].evolves_to[0]
-                        .species.name
-                    }{" "}
+                      pokemon.evolution.chain.evolves_to[0]?.evolves_to[0]
+                        ?.species.name
+                    }
                   </p>
                 </div>
               </div>
@@ -426,7 +430,7 @@ export async function getStaticProps({ params }) {
       evolution: evolution,
       evolutionImages: evolutionImages,
     };
-    /* console.log(pokemon); */
+
     return {
       props: {
         pokemon,
