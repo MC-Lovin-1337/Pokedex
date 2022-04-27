@@ -7,7 +7,6 @@ import { useRouter } from "next/router";
 
 const Pokemon = ({ pokemon }) => {
   const router = useRouter();
-  console.log(pokemon);
   if (router.isFallback) {
     return <p>Loading ...</p>;
   }
@@ -58,7 +57,7 @@ const Pokemon = ({ pokemon }) => {
             #{pokemon.id.toString().padStart(3, 0)}{" "}
           </div>
           <div
-            className="flex text-left text-xs sm:hidden"
+            className="flex text-left text-xs sm:hidden w-full pl-10 -mt-8 mb-8"
             style={{
               color: hexToRgba(
                 pokeColors[pokemon.types[0].type.name || "normal"],
@@ -181,12 +180,37 @@ const Pokemon = ({ pokemon }) => {
             </div>
           </div>
 
-          <div className="flex flex-col">
-            <div className="flex text-left relative ml-5 pt-[1em] bottom-2.5">
-              <ol>
+          <div className="flex flex-col w-full">
+            <div className="flex text-left relative ml-5 pt-[1em] bottom-2.5 w-full">
+              <ol className="w-full">
                 {pokemon.stats.map(({ stat, base_stat }) => (
-                  <li key={stat.name}>
-                    {stat.name.replace("-", " ")} {"-"} {base_stat}
+                  <li
+                    className="flex justify-between items-center"
+                    key={stat.name}
+                  >
+                    <div className="whitespace-nowrap">
+                      {stat.name.replace("-", " ")}
+                    </div>
+                    <div className="h-4 relative w-40 sm:w-96 max-w-xl rounded-full overflow-hidden">
+                      <div
+                        className="w-full h-full absolute"
+                        style={{
+                          backgroundColor: hexToRgba(
+                            pokeColors[pokemon.types[0].type.name || "normal"],
+                            0.2
+                          ),
+                        }}
+                      ></div>
+                      <div
+                        id="bar"
+                        className={`h-full bg-${
+                          pokemon.types[0].type.name || "normal"
+                        } relative text-sm text-right leading-4`}
+                        style={{ width: `${(base_stat / 200) * 100}%` }}
+                      >
+                        {base_stat}
+                      </div>
+                    </div>
                   </li>
                 ))}
               </ol>
@@ -263,7 +287,7 @@ const Pokemon = ({ pokemon }) => {
 
           <aside className="flex flex-col items-center">
             <div className="relative text-2xl mt-10 mb-5">evolutions</div>
-            <div className="flex flex-row w-screen lg:w-auto justify-around">
+            <div className="flex flex-row w-screen lg:w-auto justify-around flex-wrap max-w-md">
               {pokemon.evolutions.map((evolution) => (
                 <div key={evolution.name} className={styles.pokeTooltip}>
                   <a href={`/${evolution.name}`}>
@@ -287,7 +311,11 @@ const Pokemon = ({ pokemon }) => {
                       styles.pokeEvoDetails
                     }`}
                   >
-                    <p>{evolution.name} </p>
+                    <p>
+                      {evolution.name
+                        .replace("nidoran-m", "nidoran")
+                        .replace("nidoran-f", "nidoran")}
+                    </p>
                   </div>
                 </div>
               ))}
