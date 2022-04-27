@@ -77,7 +77,9 @@ const Pokemon = ({ pokemon }) => {
               ),
             }}
           >
-            {pokemon.name}
+            {pokemon.name
+              .replace("nidoran-m", "nidoran")
+              .replace("nidoran-f", "nidoran")}
           </div>
           <div className="flex relative">
             <div id="poke">
@@ -127,7 +129,9 @@ const Pokemon = ({ pokemon }) => {
                     ),
                   }}
                 >
-                  {pokemon.name}
+                  {pokemon.name
+                    .replace("nidoran-m", "nidoran")
+                    .replace("nidoran-f", "nidoran")}
                 </div>
               </div>
             </div>
