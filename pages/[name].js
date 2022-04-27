@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 
 const Pokemon = ({ pokemon }) => {
   const router = useRouter();
-
+  console.log(pokemon);
   if (router.isFallback) {
     return <p>Loading ...</p>;
   }
@@ -264,80 +264,33 @@ const Pokemon = ({ pokemon }) => {
           <aside className="flex flex-col items-center">
             <div className="relative text-2xl mt-10 mb-5">evolutions</div>
             <div className="flex flex-row w-screen lg:w-auto justify-around">
-              <div className={styles.pokeTooltip}>
-                {pokemon.evolution.chain.species.name && (
-                  <a href={`/${pokemon.evolution.chain.species.name}`}>
-                    {pokemon.evolutionImages[0] && (
+              {pokemon.evolutions.map((evolution) => (
+                <div key={evolution.name} className={styles.pokeTooltip}>
+                  <a href={`/${evolution.name}`}>
+                    {evolution.sprites.other["dream_world"][
+                      "front_default"
+                    ] && (
                       <Image
-                        src={pokemon.evolutionImages[0]}
-                        alt={pokemon.name}
+                        src={
+                          evolution.sprites.other["dream_world"][
+                            "front_default"
+                          ]
+                        }
+                        alt={evolution.name}
                         height={125}
                         width={125}
                       ></Image>
                     )}
                   </a>
-                )}
-                <div
-                  className={`bg-${pokemon.types[0].type.name || "normal"} ${
-                    styles.pokeTooltipDetails
-                  }`}
-                >
-                  <p>{pokemon.evolution.chain.species.name} </p>
-                </div>
-              </div>
-
-              <div className={styles.pokeTooltip}>
-                {pokemon.evolution.chain.evolves_to[0] && (
-                  <a
-                    href={`/${pokemon.evolution.chain.evolves_to[0].species.name}`}
+                  <div
+                    className={`bg-${pokemon.types[0].type.name || "normal"} ${
+                      styles.pokeEvoDetails
+                    }`}
                   >
-                    {pokemon.evolutionImages[1] && (
-                      <Image
-                        src={pokemon.evolutionImages[1]}
-                        alt={pokemon.name}
-                        height={125}
-                        width={125}
-                      ></Image>
-                    )}
-                  </a>
-                )}
-                <div
-                  className={`bg-${pokemon.types[0].type.name || "normal"} ${
-                    styles.pokeTooltipDetails
-                  }`}
-                >
-                  <p>{pokemon.evolution.chain.evolves_to[0]?.species.name} </p>
+                    <p>{evolution.name} </p>
+                  </div>
                 </div>
-              </div>
-
-              <div className={styles.pokeTooltip}>
-                {pokemon.evolution.chain.evolves_to[0]?.evolves_to[0] && (
-                  <a
-                    href={`/${pokemon.evolution.chain.evolves_to[0].evolves_to[0].species.name}`}
-                  >
-                    {pokemon.evolutionImages[2] && (
-                      <Image
-                        src={pokemon.evolutionImages[2]}
-                        alt={pokemon.name}
-                        height={125}
-                        width={125}
-                      ></Image>
-                    )}
-                  </a>
-                )}
-                <div
-                  className={`bg-${pokemon.types[0].type.name || "normal"} ${
-                    styles.pokeTooltipDetails
-                  }`}
-                >
-                  <p>
-                    {
-                      pokemon.evolution.chain.evolves_to[0]?.evolves_to[0]
-                        ?.species.name
-                    }
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
           </aside>
         </footer>
@@ -348,18 +301,19 @@ const Pokemon = ({ pokemon }) => {
 
 //--------------------------------------------------------------------------------------
 
-async function getEvolution(images, chain) {
+async function getEvolutions(evolutions, chain) {
   const evolutionsRes = await fetch(
     `${process.env.API_URL}/pokemon/${chain.species.name}`
   );
   const evolutionsDetails = await evolutionsRes.json();
 
-  images.push(evolutionsDetails.sprites.other["dream_world"]["front_default"]);
-  if (chain.evolves_to.length > 0) {
-    return getEvolution(images, chain.evolves_to[0]);
-  } else {
-    return images;
-  }
+  evolutions.push(evolutionsDetails);
+
+  chain.evolves_to.forEach((element) => {
+    getEvolutions(evolutions, element);
+  });
+
+  return evolutions;
 }
 
 //--------------------------------------------------------------------------------------
@@ -380,7 +334,7 @@ export async function getStaticProps({ params }) {
 
     const evolutionRes = await fetch(species.evolution_chain.url);
     const evolution = await evolutionRes.json();
-    const evolutionImages = await getEvolution([], evolution.chain);
+    const evolutions = await getEvolutions([], evolution.chain);
 
     //--------------------------------------------------------------------------------------
 
@@ -428,7 +382,7 @@ export async function getStaticProps({ params }) {
       order: pokeDetails.order,
       species: species,
       evolution: evolution,
-      evolutionImages: evolutionImages,
+      evolutions: evolutions,
     };
 
     return {
