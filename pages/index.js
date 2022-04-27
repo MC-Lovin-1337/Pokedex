@@ -68,7 +68,7 @@ export default function Home({ pokemon }) {
 export async function getStaticProps() {
   try {
     const pokeRes = await fetch(
-      `${process.env.API_URL}/pokemon?offset=0&limit=151`
+      `${process.env.API_URL}/pokemon?offset=0&limit=471`
     );
     const pokemon = await pokeRes.json();
     const pokemonPromiseList = pokemon.results.map(async (p) => {

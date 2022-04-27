@@ -435,7 +435,7 @@ export async function getStaticProps({ params }) {
 export async function getStaticPaths() {
   try {
     const pokeRes = await fetch(
-      `${process.env.API_URL}/pokemon?offset=0&limit=151`
+      `${process.env.API_URL}/pokemon?offset=0&limit=471`
     );
     const pokemon = await pokeRes.json();
 
