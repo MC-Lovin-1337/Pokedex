@@ -186,7 +186,7 @@ const Pokemon = ({ pokemon }) => {
 
           <div className="flex flex-col w-full">
             <div className="flex text-left relative ml-5 pt-[1em] bottom-2.5 w-full">
-              <ol className="w-full lg:mr-80">
+              <ol className="w-full md:mr-10 lg:mr-80">
                 {pokemon.stats.map(({ stat, base_stat }) => (
                   <li
                     className="flex justify-between items-center"
